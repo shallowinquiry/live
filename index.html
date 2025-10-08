@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShallowInquiryLive</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100vh;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #video-container {
+      position: relative;
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto;
+      height: auto;
+      background: black;
+    }
+
+    video {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+      background: black;
+    }
+
+    #live-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: red;
+      color: white;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-family: sans-serif;
+      user-select: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false">
+
+  <div id="video-container">
+    <div id="live-badge">LIVE</div>
+    <video id="videoPlayer" autoplay muted playsinline></video>
+  </div>
+
+  <script>
+    const playlist = [
+      "https://dn720402.ca.archive.org/0/items/watamote-s-1e-8/WATAMOTE%20e1e1.mp4",
+      "https://example.com/video2.mp4",
+      "https://example.com/video3.mp4"
+    ];
+
+    let index = 0;
+    const video = document.getElementById('videoPlayer');
+
+    function playVideo(i) {
+      video.src = playlist[i];
+      video.load();
+      video.play();
+    }
+
+    video.addEventListener('seeking', () => {
+      video.currentTime = 0;
+    });
+
+    video.addEventListener('pause', () => {
+      video.play();
+    });
+
+    video.addEventListener('ended', () => {
+      index = (index + 1) % playlist.length;
+      playVideo(index);
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+
+    playVideo(index);
+  </script>
+
+</body>
+</html>
