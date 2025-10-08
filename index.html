@@ -1,40 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>ShallowInquiryLive</title>
+  <meta charset="UTF-8">
+  <title>Simulated Live Stream</title>
   <style>
     html, body {
       margin: 0;
-      height: 100vh;
       background-color: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       overflow: hidden;
-    }
-
-    #video-container {
-      position: relative;
-      max-width: 100vw;
-      max-height: 100vh;
-      width: auto;
-      height: auto;
-      background: black;
+      height: 100%;
     }
 
     video {
-      max-width: 100vw;
-      max-height: 100vh;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      display: block;
-      user-select: none;
-      pointer-events: none;
-      background: black;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; /* prevent mouse interaction */
     }
 
+    /* Optional "LIVE" badge */
     #live-badge {
       position: absolute;
       top: 10px;
@@ -45,17 +29,14 @@
       padding: 5px 10px;
       border-radius: 4px;
       font-family: sans-serif;
-      user-select: none;
-      z-index: 10;
     }
   </style>
 </head>
 <body oncontextmenu="return false">
 
-  <div id="video-container">
-    <div id="live-badge">LIVE</div>
-    <video id="videoPlayer" autoplay muted playsinline></video>
-  </div>
+  <div id="live-badge">LIVE</div>
+
+  <video id="videoPlayer" autoplay muted playsinline></video>
 
   <script>
     const playlist = [
@@ -73,22 +54,27 @@
       video.play();
     }
 
+    // Prevent seeking
     video.addEventListener('seeking', () => {
       video.currentTime = 0;
     });
 
+    // Prevent pause
     video.addEventListener('pause', () => {
       video.play();
     });
 
+    // Loop through videos
     video.addEventListener('ended', () => {
       index = (index + 1) % playlist.length;
       playVideo(index);
     });
 
+    // Block right-click and drag
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('dragstart', e => e.preventDefault());
 
+    // Start
     playVideo(index);
   </script>
 
