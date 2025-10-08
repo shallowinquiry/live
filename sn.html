@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Random Video</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            font-family: monospace;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        button {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+            padding: 10px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        video {
+            display: none;
+            width: 95%;
+            height: auto;
+            border: 1px solid black;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daily Random Video</h1>
+    <p>Click the button to show today's random video. It changes every day.</p>
+    <button id="showButton">Show Today's Video</button>
+    <div id="videoContainer"></div>
 
+    <script>
+        // Replace this array with your own .mp4 video URLs
+        const videoUrls = [
+            'https://player.odycdn.com/api/v3/streams/free/Machiko-sensei-spanking/bb743af48e50266741e9874c1ea844c7775a9c64/e07ebc.mp4',
+            'https://player.odycdn.com/api/v3/streams/free/maichiko-84/95439b79b9a55f16c44459fb296aa543a05cdc01/4884c7.mp4',
+            'https://player.odycdn.com/api/v3/streams/free/Twin-Dolls-Legend-of-the-Heavenly-Beasts-F-m-spanking/6bfb9f5981db99b0d15ebf98cffcd5e9de4525ba/ceb247.mp4https://example.com/video3.mp4',
+            'https://player.odycdn.com/api/v3/streams/free/Nurse-Me-Long-spanking-F-F/cd4f698cb6a745160195079a61e3a802a6d88ddf/867da6.mp4',
+            'https://player.odycdn.com/api/v3/streams/free/Ninja-Hattori-Kun-ep3/016763f7662d0c3d0ca8590975060e568612d609/b1956e.mp4',
+            // Add more video URLs here...
+        ];
+
+        const showButton = document.getElementById('showButton');
+        const videoContainer = document.getElementById('videoContainer');
+        const storageKey = 'dailyVideo_' + new Date().toISOString().split('T')[0];
+
+        function loadVideo() {
+            const savedUrl = localStorage.getItem(storageKey);
+            if (savedUrl && videoUrls.includes(savedUrl)) {
+                const video = document.createElement('video');
+                video.src = savedUrl;
+                video.controls = true;
+                video.style.display = 'block';
+                videoContainer.appendChild(video);
+                showButton.style.display = 'none';
+                return true;
+            }
+            return false;
+        }
+
+        function showRandomVideo() {
+            // Get current date as YYYY-MM-DD
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Simple hash function to seed random based on date
+            let hash = 0;
+            for (let i = 0; i < today.length; i++) {
+                hash = today.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            
+            // Use hash to select random index (consistent for the day)
+            const randomIndex = Math.abs(hash) % videoUrls.length;
+            const selectedUrl = videoUrls[randomIndex];
+            
+            // Save to localStorage
+            localStorage.setItem(storageKey, selectedUrl);
+            
+            // Create video element
+            const video = document.createElement('video');
+            video.src = selectedUrl;
+            video.controls = true;
+            video.style.display = 'block';
+            videoContainer.appendChild(video);
+            
+            // Hide button only
+            showButton.style.display = 'none';
+        }
+
+        // Check if video is already saved for today
+        if (!loadVideo()) {
+            showButton.addEventListener('click', showRandomVideo);
+        }
+
+        // Disable right-click on the page (basic protection, but not foolproof)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Attempt to disable dev tools (not reliable, as users can still access)
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
