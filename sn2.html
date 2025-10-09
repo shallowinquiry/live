@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Video Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+    video {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Random Video Viewer</h1>
+    <video id="videoPlayer" controls></video>
+    <br>
+    <button id="playButton">Play Random Video</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const videos = [
+      'https://player.odycdn.com/api/v3/streams/free/Machiko-sensei-spanking/bb743af48e50266741e9874c1ea844c7775a9c64/e07ebc.mp4', // Sample video 1
+      'https://player.odycdn.com/api/v3/streams/free/maichiko-84/95439b79b9a55f16c44459fb296aa543a05cdc01/4884c7.mp4', // Sample video 2
+      'https://player.odycdn.com/api/v3/streams/free/Twin-Dolls-Legend-of-the-Heavenly-Beasts-F-m-spanking/6bfb9f5981db99b0d15ebf98cffcd5e9de4525ba/ceb247.mp4',
+      'https://player.odycdn.com/api/v3/streams/free/Nurse-Me-Long-spanking-F-F/cd4f698cb6a745160195079a61e3a802a6d88ddf/867da6.mp4',
+      'https://player.odycdn.com/api/v3/streams/free/Ninja-Hattori-Kun-ep3/016763f7662d0c3d0ca8590975060e568612d609/b1956e.mp4'// Sample video 3
+    ];
+
+    const playButton = document.getElementById('playButton');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const message = document.getElementById('message');
+
+    // Check if a video has been played today
+    function checkLastVideoPlayed() {
+      const lastPlayedDate = localStorage.getItem('lastPlayedDate');
+      const currentDate = new Date().toISOString().split('T')[0]; // Get only the date (yyyy-mm-dd)
+
+      if (lastPlayedDate === currentDate) {
+        message.textContent = 'You have already watched a video today!';
+        playButton.disabled = true;
+      } else {
+        message.textContent = 'Click the button to play a random video!';
+        playButton.disabled = false;
+      }
+    }
+
+    // Play a random video
+    function playRandomVideo() {
+      const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+      videoPlayer.src = randomVideo;
+      videoPlayer.play();
+      
+      // Store the current date as the last played date
+      const currentDate = new Date().toISOString().split('T')[0];
+      localStorage.setItem('lastPlayedDate', currentDate);
+
+      // Update message and disable the button
+      message.textContent = 'Enjoy your video!';
+      playButton.disabled = true;
+    }
+
+    // Check if video was played today on page load
+    checkLastVideoPlayed();
+
+    // Event listener for the play button
+    playButton.addEventListener('click', playRandomVideo);
+  </script>
+</body>
+</html>
