@@ -41,7 +41,7 @@
         const videoUrls = [
             'https://player.odycdn.com/api/v3/streams/free/Machiko-sensei-spanking/bb743af48e50266741e9874c1ea844c7775a9c64/e07ebc.mp4',
             'https://player.odycdn.com/api/v3/streams/free/maichiko-84/95439b79b9a55f16c44459fb296aa543a05cdc01/4884c7.mp4',
-            'https://player.odycdn.com/api/v3/streams/free/Twin-Dolls-Legend-of-the-Heavenly-Beasts-F-m-spanking/6bfb9f5981db99b0d15ebf98cffcd5e9de4525ba/ceb247.mp4https://example.com/video3.mp4',
+            'https://player.odycdn.com/api/v3/streams/free/Twin-Dolls-Legend-of-the-Heavenly-Beasts-F-m-spanking/6bfb9f5981db99b0d15ebf98cffcd5e9de4525ba/ceb247.mp4',
             'https://player.odycdn.com/api/v3/streams/free/Nurse-Me-Long-spanking-F-F/cd4f698cb6a745160195079a61e3a802a6d88ddf/867da6.mp4',
             'https://player.odycdn.com/api/v3/streams/free/Ninja-Hattori-Kun-ep3/016763f7662d0c3d0ca8590975060e568612d609/b1956e.mp4',
             // Add more video URLs here...
@@ -49,6 +49,7 @@
 
         const showButton = document.getElementById('showButton');
         const videoContainer = document.getElementById('videoContainer');
+        // Use only the date (YYYY-MM-DD) for the storage key
         const storageKey = 'dailyVideo_' + new Date().toISOString().split('T')[0];
 
         function loadVideo() {
